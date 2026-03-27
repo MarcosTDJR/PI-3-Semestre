@@ -6,6 +6,7 @@
     <title>Distribuidora Foccus | Portal B2B</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.min.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <style>
@@ -16,19 +17,64 @@
 <body class="bg-gray-50 font-sans">
 
     <nav class="bg-slate-500 text-white p-4 shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <img src="{{ asset('LOGO_FOCCUS.png') }}" width="200" alt="Logo Foccus">
-            <div class="space-x-6 hidden md:flex text-sm font-medium">
-                <a href="#" class="hover:text-slate-200 transition">Catálogo</a>
-                <a href="#" class="hover:text-slate-200 transition">Meus Pedidos</a>
-                <a href="#" class="hover:text-slate-200 transition">Financeiro</a>
-                <a href="#" class="hover:text-slate-200 transition">Contato</a>
+    <div class="max-w-7xl mx-auto flex justify-between items-center gap-8">
+        
+        <div class="flex-shrink-0">
+            <a href="/">
+                <img src="{{ asset('LOGO_FOCCUS.png') }}" width="180" alt="Logo Foccus">
+            </a>
+        </div>
+
+        <div class="flex-1 max-w-md hidden lg:block">
+            <form action="/search" method="GET" class="relative">
+                <input type="text" 
+                       name="q" 
+                       placeholder="O que você procura hoje?" 
+                       class="w-full bg-slate-600 text-white text-sm rounded-full py-2 px-10 focus:outline-none focus:ring-2 focus:ring-slate-300 placeholder-slate-300 transition-all border border-transparent focus:bg-slate-700">
+                <div class="absolute left-3 top-2.5 text-slate-300">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </form>
+        </div>
+
+        <div class="space-x-6 hidden xl:flex text-sm font-medium items-center">
+            <div class="relative" x-data="{ open: false }">
+                <button @click="open = !open" @click.away="open = false" class="flex items-center hover:text-slate-200 transition outline-none">
+                    Catálogo
+                    <svg class="w-4 h-4 ml-1 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-xl py-2 z-50 border border-gray-100">
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-slate-100">Todos os Produtos</a>
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-slate-100">Lançamentos</a>
+                    <hr class="my-1">
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-slate-100">Periféricos</a>
+                </div>
             </div>
-            <div class="bg-slate-800 px-4 py-2 rounded-full cursor-pointer hover:bg-slate-700 transition">
-                <span class="text-xs">🛒 Carrinho</span>
+
+            <a href="#" class="hover:text-slate-200 transition">Pedidos</a>
+            <a href="#" class="hover:text-slate-200 transition">Contato</a>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <div class="hidden sm:flex items-center space-x-3 border-r border-slate-400 pr-4 text-xs">
+                <a href="/login" class="hover:text-slate-200 transition">Entrar</a>
+                <a href="/register" class="bg-white text-slate-600 px-3 py-1.5 rounded-lg font-bold hover:bg-slate-100 transition shadow-sm">
+                    Cadastrar
+                </a>
+            </div>
+
+            <div class="bg-slate-800 px-4 py-2 rounded-full cursor-pointer hover:bg-slate-700 transition flex items-center gap-2">
+                <span class="text-sm">🛒</span>
+                <span class="text-xs font-bold hidden md:inline">Carrinho</span>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <main class="max-w-7xl mx-auto p-6 md:p-10">
         
@@ -78,9 +124,7 @@
                 <h2 class="text-3xl font-bold text-gray-900">Catálogo Geral</h2>
                 <p class="text-gray-500">Explore todos os nossos produtos em estoque.</p>
             </div>
-            <div class="w-full md:w-80">
-                <input type="text" placeholder="Buscar produto..." class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
-            </div>
+           
         </header>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
