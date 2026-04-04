@@ -1,1 +1,1 @@
-Teste para projeto da foccus
+Projeto de e-commerce da Foccus
