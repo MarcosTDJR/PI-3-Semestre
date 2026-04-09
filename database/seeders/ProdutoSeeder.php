@@ -18,7 +18,7 @@ class ProdutoSeeder extends Seeder
 
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 
-                // CORREÇÃO: Se o PHP não achar a vírgula, ele joga a linha inteira no índice [0].
+                // Se o PHP não achar a vírgula, ele joga a linha inteira no índice [0].
                 // Se isso acontecer, tentamos separar por ponto e vírgula (;).
                 if (count($data) < 2) {
                     $data = explode(';', $data[0]);
