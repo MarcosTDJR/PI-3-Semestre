@@ -6,12 +6,43 @@
     <title>Distribuidora Foccus | Portal B2B</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/02669f3445.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.min.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <style>
         .swiper { width: 100%; padding-bottom: 40px; }
-        .swiper-button-next, .swiper-button-prev { color: #1e293b; }
+        .swiper-button-next {  
+             color: #1e293b;
+             margin-right: 40px;
+             margin-top:-7%;
+             }  
+        .swiper-button-prev{
+            color: #1e293b;
+            margin-left: 40px;
+            margin-top:-7%;
+            }  
+.swiper-pagination {
+    display: flex; 
+    justify-content: center; 
+    flex-wrap: nowrap; 
+    overflow-x: auto; 
+    padding: 10px 0; 
+    
+    /* Para esconder a barra de rolagem */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+}
+
+
+.swiper-pagination-bullet {
+    flex-shrink: 0; 
+}
+
+       
+        
+
+
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -84,7 +115,7 @@
         
         <section class="mb-16">
             <div class="flex items-center gap-2 mb-6">
-                <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">HOT</span>
+                <i class="fa-solid fa-fire" style="color: #f52727; font-size: 30px "></i>
                 <h2 class="text-2xl font-bold text-gray-800">Ofertas da Semana</h2>
             </div>
 
@@ -95,8 +126,8 @@
                             <div class="relative">
                                 <img src="{{ $item->imagem ?? 'https://via.placeholder.com/300x200' }}" class="w-full h-48 object-cover">
                                 @if($item->preco_antigo)
-                                    <span class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                        OFF
+                                    <span class="absolute top-2 right-2  px-2 py-1 rounded">
+                                        <i class="fa-solid fa-tag" style="color: #f52727;font-size: 20px"></i>
                                     </span>
                                 @endif
                             </div>
@@ -116,9 +147,10 @@
                     @endforeach
                 </div>
                 <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+
             </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div> 
         </section>
 
         <hr class="mb-16 border-gray-200">
