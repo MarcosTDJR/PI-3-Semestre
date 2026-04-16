@@ -1,545 +1,75 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title> Cadastro • Meus Dados</title>
-
-  <!-- Fonte + ícones -->
-  <link rel="stylesheet" href="../css/meusdados.css">
-  <style>
-
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
-
-/* ======= BASE ======= */
-* {
-  font-family: 'Open Sans', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  --grey: #F1F0F6;
-  --dark-grey: #8D8D8D;
-  --light: #fff;
-  --dark: #000;
-  --green: #81D43A;
-  --light-green: #E3FFCB;
-  --blue: #1775F1;
-  --light-blue: #D0E4FF;
-  --dark-blue: #0C5FCD;
-  --red: #FC3B56;
-}
-
-html { overflow-x: hidden; }
-body { background: var(--grey); overflow-x: hidden; }
-
-a { text-decoration: none; color: inherit; }
-li { list-style: none; }
-
-/* ======= BOTÕES ======= */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--blue);
-  color: var(--light);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .2s ease, transform .05s ease;
-}
-.btn-primary:hover { background: var(--dark-blue); }
-.btn-primary:active { transform: translateY(1px); }
-
-/* ======= SIDEBAR ======= */
-#sidebar {
-  position: fixed;
-  max-width: 260px;
-  width: 100%;
-  background: var(--light);
-  top: 0;
-  left: 0;
-  height: 100%;
-  overflow-y: auto;
-  scrollbar-width: none;
-  transition: all .3s ease;
-  z-index: 200;
-}
-#sidebar.hide { max-width: 60px; }
-#sidebar.hide:hover { max-width: 260px; }
-#sidebar::-webkit-scrollbar { display: none; }
-
-#sidebar .brand {
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  height: 64px;
-  font-weight: 700;
-  color: var(--blue);
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  background: var(--light);
-  transition: all .3s ease;
-  justify-content: center;
-}
-
-/* Itens do menu lateral */
-#sidebar .side-menu {
-  margin: 36px 0;
-  padding: 0 20px;
-  transition: all .3s ease;
-}
-
-#sidebar.hide .side-menu { padding: 0 6px; }
-#sidebar.hide:hover .side-menu { padding: 0 20px; }
-
-#sidebar .side-menu a {
-  display: block;
-  font-size: 15px;
-  color: var(--dark);
-  padding: 12px 16px;
-  border-radius: 10px;
-  margin: 6px 0;
-  white-space: nowrap;
-  text-align: center;
-  font-weight: 500;
-  transition: background .3s ease, color .3s ease;
-}
-
-#sidebar .side-menu > li > a:hover {
-  background: var(--grey);
-  color: var(--blue);
-}
-
-#sidebar .side-menu > li > a.active,
-#sidebar .side-menu > li > a.active:hover {
-  background: var(--blue);
-  color: var(--light);
-}
-
-/* Divisor "NAVEGAÇÃO" */
-#sidebar .divider {
-  margin-top: 24px;
-  margin-bottom: 8px;
-  font-size: 12px;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dark-grey);
-  text-align: center;
-}
-
-/* Área inferior */
-#sidebar .ads { width: 100%; padding: 20px; }
-#sidebar .ads .wrapper {
-  background: var(--grey);
-  padding: 20px;
-  border-radius: 10px;
-}
-#sidebar .ads .wrapper p {
-  font-size: 12px;
-  color: var(--dark-grey);
-  text-align: center;
-}
-
-/* ======= CONTENT ======= */
-#content {
-  position: relative;
-  width: calc(100% - 260px);
-  left: 260px;
-  transition: all .3s ease;
-}
-#sidebar.hide + #content {
-  width: calc(100% - 60px);
-  left: 60px;
-}
-
-/* ======= NAVBAR ======= */
-nav {
-  background: var(--light);
-  height: 64px;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  grid-gap: 28px;
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-nav .toggle-sidebar { font-size: 18px; cursor: pointer; }
-
-nav .divider {
-  width: 1px;
-  background: var(--grey);
-  height: 12px;
-  display: block;
-}
-
-nav .profile { position: relative; }
-nav .profile img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  cursor: pointer;
-}
-
-/* Menu dropdown do perfil */
-nav .profile .profile-link {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  background: var(--light);
-  padding: 10px 0;
-  box-shadow: 4px 4px 16px rgba(0, 0, 0, .1);
-  border-radius: 10px;
-  width: 160px;
-  opacity: 0;
-  pointer-events: none;
-  transition: all .3s ease;
-}
-nav .profile .profile-link.show {
-  opacity: 1;
-  pointer-events: visible;
-  top: 100%;
-}
-nav .profile .profile-link a {
-  padding: 10px 16px;
-  display: flex;
-  grid-gap: 10px;
-  font-size: 14px;
-  color: var(--dark);
-  align-items: center;
-  transition: all .3s ease;
-}
-nav .profile .profile-link a:hover { background: var(--grey); }
-
-/* ======= MAIN ======= */
-main {
-  width: 100%;
-  padding: 24px 20px 20px 20px;
-}
-main .title {
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-main .breadcrumbs {
-  display: flex;
-  grid-gap: 6px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-main .breadcrumbs li,
-main .breadcrumbs li a { font-size: 14px; }
-main .breadcrumbs li a { color: var(--blue); }
-main .breadcrumbs li a.active,
-main .breadcrumbs li.divider {
-  color: var(--dark-grey);
-  pointer-events: none;
-}
-
-/* Cards gerais */
-main .info-data {
-  margin-top: 36px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  grid-gap: 20px;
-}
-main .info-data .card {
-  padding: 20px;
-  border-radius: 10px;
-  background: var(--light);
-  box-shadow: 4px 4px 16px rgba(0, 0, 0, .05);
-  transition: transform .06s ease, box-shadow .2s ease;
-}
-main .info-data .card:hover {
-  transform: translateY(-1px);
-  box-shadow: 6px 6px 20px rgba(0,0,0,.08);
-}
-main .card .head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-main .card .head h2 {
-  font-size: 22px;
-  font-weight: 600;
-}
-main .card .head p { font-size: 13px; color: var(--dark-grey); }
-
-/* ======= Solicitações: cartões empilhados ======= */
-.info-data.cards-pilha {
-  grid-template-columns: 1fr;
-}
-
-.image-slot {
-  margin-top: 16px;
-  width: 100%;
-  min-height: 120px;
-  border: 2px dashed #d9d9d9;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--dark-grey);
-  font-size: 14px;
-}
-
-.card .btn-wrap {
-  margin-top: 16px;
-}
-
-/* ======= Avatar com hover “Alterar foto” ======= */
-.avatar-wrapper {
-  position: relative;
-  width: 36px;
-  height: 36px;
-}
-
-.avatar-wrapper .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--blue);
-  background: var(--grey);
-  cursor: pointer;
-}
-
-.avatar-overlay {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  font-size: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 4px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .2s ease;
-}
-.avatar-wrapper:hover .avatar-overlay {
-  opacity: 1;
-}
-
-/* ======= FORMULÁRIOS DE CADASTRO ======= */
-.page {
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 32px 16px;
-}
-
-.card-cadastro {
-  width: 100%;
-  max-width: 960px;
-  background: var(--light);
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-  padding: 32px 28px 24px;
-}
-
-.avatar-box {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 24px;
-}
-
-.avatar-btn {
-  position: absolute;
-  bottom: 6px;
-  right: 10px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: var(--light);
-  box-shadow: 0 4px 10px rgba(0,0,0,.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform .1s ease, box-shadow .1s ease;
-}
-.avatar-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(0,0,0,.3);
-}
-.avatar-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 8px rgba(0,0,0,.25);
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 18px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.field label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #111827;
-}
-
-.field input,
-.field select {
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  padding: 10px 12px;
-  font-size: 14px;
-  outline: none;
-  background: #f9fafb;
-  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
-}
-
-.field input:focus,
-.field select:focus {
-  border-color: var(--blue);
-  background: #ffffff;
-  box-shadow: 0 0 0 1px var(--blue), 0 0 0 4px var(--light-blue);
-}
-
-/* Botões */
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 22px;
-}
-
-.btn-secondary {
-  background: #e5e7eb;
-  color: #111827;
-  border-radius: 999px;
-  padding: 10px 18px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: background .18s ease;
-}
-.btn-secondary:hover { background: #d1d5db; }
-
-@media (max-width: 768px) {
-  .card-cadastro {
-    padding: 24px 18px 20px;
-  }
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acessar Portal</title>
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/02669f3445.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
-<body>
-  <div class="page">
-    <div class="card-cadastro">
-      <!-- AVATAR GRANDE -->
-      <div class="avatar-box">
-        <div class="avatar-wrapper">
-          <div class="avatar-preview" id="avatarPreview"></div>
-          <button class="avatar-btn" id="avatarButton" type="button" aria-label="Alterar foto">
-            <i class="bx bx-camera"></i>
-          </button>
-          <input type="file" id="avatarInput" accept="image/*" hidden />
+<body class="bg-[#f4f4f4] flex items-center justify-center min-h-screen font-sans">
+
+    <section class="main">
+        <!-- Container Principal -->
+        <div class="flex w-[950px] h-[600px] bg-white rounded-[20px] shadow-2xl overflow-hidden">
+            
+            <!-- Lado Esquerdo (Azul) -->
+            <div class="relative w-[35%] bg-[#465367] p-[50px] text-white flex flex-col justify-center">
+                <!-- Botão Home (Substituindo o absolute manual por Tailwind) -->
+                <a class="absolute top-10 left-10 text-white no-underline text-sm flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity" href="#">
+                    <i class="fa-solid fa-angle-left"></i> Home
+                </a>
+
+                <div class="logo">
+                    <img src="{{ asset('LOGO_FOCCUS.png') }}" class="w-40 brightness-0 invert" alt="Logo Foccus">
+                </div>
+                <h1 class="text-[28px] font-bold mt-[30px] mb-[15px] leading-tight">Bem-vindo ao seus dados!</h1>
+                <p class="text-[14px] leading-[1.6] opacity-80">Acesse sua conta para ver ou alterar seus dados cadastrados.</p>
+            </div>
+
+            <!-- Lado Direito (Branco/Formulário) -->
+            <div class="w-[65%] p-[60px] flex flex-col justify-center">
+                <h2 class="text-[24px] font-bold text-[#1a1a1a]">Seus Dados</h2>
+                <p class="text-[13px] text-[#888] mb-[30px]">Atualize ou Adicione seus dados aqui.</p>
+
+                <form>
+                    <div class="mb-[20px]">
+                        <label class="block text-[11px] font-bold text-[#aaa] uppercase tracking-[1px] mb-[5px]">Nome Completo</label>
+                        <input type="text" placeholder="Digite seu nome" class="w-full p-[12px] border border-[#e0e0e0] rounded-[8px] text-[14px] outline-none focus:border-[#465367] transition-colors">
+                    </div>
+
+                    <div class="flex gap-[20px] mb-[20px]">
+                        <div class="flex-1">
+                            <label class="block text-[11px] font-bold text-[#aaa] uppercase tracking-[1px] mb-[5px]">CPF</label>
+                            <input type="text" placeholder="000.000.000-00" class="w-full p-[12px] border border-[#e0e0e0] rounded-[8px] text-[14px] outline-none focus:border-[#465367] transition-colors">
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-[11px] font-bold text-[#aaa] uppercase tracking-[1px] mb-[5px]">Telefone</label>
+                            <input type="text" placeholder="(00) 00000-0000" class="w-full p-[12px] border border-[#e0e0e0] rounded-[8px] text-[14px] outline-none focus:border-[#465367] transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="mb-[20px]">
+                        <label class="block text-[11px] font-bold text-[#aaa] uppercase tracking-[1px] mb-[5px]">E-mail</label>
+                        <input type="email" placeholder="seu@email.com" class="w-full p-[12px] border border-[#e0e0e0] rounded-[8px] text-[14px] outline-none focus:border-[#465367] transition-colors">
+                    </div>
+
+                    <!-- Seção de Botões -->
+                    <div class="mt-[20px] flex gap-[10px] items-start">
+                        <button type="button" class="w-1/2 bg-[#465367] text-white border border-[#ddd] p-[15px] rounded-[8px] text-[14px] font-semibold cursor-pointer transition-all duration-500 hover:bg-[#888888]">
+                            Trocar Senha
+                        </button>
+                        <button type="submit" class="w-1/2 bg-[#1e293b] text-white p-[15px] rounded-[8px] text-[14px] font-bold cursor-pointer hover:bg-slate-700 transition-colors">
+                            Salvar Alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+
         </div>
-      </div>
-      <!-- FORMULÁRIO DE DADOS -->
-      <form class="form-dados" autocomplete="off">
-        <div class="form-grid">
-          <div class="field">
-            <label for="tipoConta">Tipo de conta</label>
-            <select id="tipoConta">
-              <option>Pessoa Física</option>
-              <option>Pessoa Jurídica</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="cpf">CPF</label>
-            <input id="cpf" type="text" placeholder="111.222.333-44" />
-          </div>
-
-          <div class="field">
-            <label for="nome">Nome</label>
-            <input id="nome" type="text" placeholder="Seu nome completo" />
-          </div>
-
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" type="email" placeholder="seuemail@exemplo.com" />
-          </div>
-
-          <div class="field">
-            <label for="telefone">Telefone (WhatsApp)</label>
-            <input id="telefone" type="tel" placeholder="(11) 91234-5678" />
-          </div>
-
-          <div class="field">
-            <label for="cep">CEP</label>
-            <input id="cep" type="text" placeholder="00000-000" />
-          </div>
-
-          <div class="field">
-            <label for="endereco">Endereço</label>
-            <input id="endereco" type="text" placeholder="Rua dos Bobos" />
-          </div>
-
-          <div class="field">
-            <label for="numero">Número</label>
-            <input id="numero" type="text" placeholder="0" />
-          </div>
-
-          <div class="field">
-            <label for="complemento">Complemento</label>
-            <input id="complemento" type="text" placeholder="Apartamento, bloco..." />
-          </div>
-
-          <div class="field">
-            <label for="bairro">Bairro</label>
-            <input id="bairro" type="text" placeholder="Bairro" />
-          </div>
-
-          <div class="field">
-            <label for="cidade">Cidade</label>
-            <input id="cidade" type="text" placeholder="Cidade" />
-          </div>
-
-          <div class="field">
-            <label for="estado">Estado</label>
-            <input id="estado" type="text" placeholder="SP" />
-          </div>
-        </div>
-
-        <div class="actions">
-          <button type="button" class="btn-secondary">Alterar Senha</button>
-          <button type="submit" class="btn-primary">Salvar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script src="admin.js"></script>
+    </section>     
 </body>
 </html>

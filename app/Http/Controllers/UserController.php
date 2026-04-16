@@ -13,4 +13,8 @@ class UserController extends Controller {
         return view('meusdados');
         
         }
+
+    public function home(){
+        return view('index');
+    }    
 }
