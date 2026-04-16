@@ -152,8 +152,8 @@
                       Olá, {{ auth()->user()->name }}
                     </button>
                     <div id="menu" class="dropdown-content">
-                         <a href="/meusdados">Meus dados</a>
-                         <form method="POST" action="/logout">
+                         <a target="_blank" href="/meusdados">Meus dados</a>
+                         <form m  ethod="POST" action="/logout">
                         @csrf
                          <button type="submit">Sair</button>
                         </form>
